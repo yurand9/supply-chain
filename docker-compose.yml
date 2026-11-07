@@ -1,0 +1,43 @@
+# ============================================
+# b2b-supply-chain 项目的基础设施（本地开发用）
+# 一键启动：docker compose up -d
+# 停止：    docker compose down
+# ============================================
+
+services:
+  # PostgreSQL 数据库
+  postgres:
+    image: postgres:16
+    container_name: b2b-postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: b2b_db          # 首次启动时自动创建这个库
+    ports:
+      - "5433:5432"                 # 你电脑的 5433 端口 -> 容器内 5432
+    volumes:
+      - b2b-pg-data:/var/lib/postgresql/data   # 数据持久化，容器重启数据不丢
+    restart: unless-stopped
+
+  # Redis 缓存 / 分布式锁
+  redis:
+    image: redis:7-alpine
+    container_name: b2b-redis
+    ports:
+      - "6379:6379"
+    restart: unless-stopped
+
+  # RabbitMQ 消息队列（带管理界面）
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: b2b-rabbitmq
+    environment:
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
+    ports:
+      - "5672:5672"                 # 消息队列端口
+      - "15672:15672"               # 管理界面 http://localhost:15672
+    restart: unless-stopped
+
+volumes:
+  b2b-pg-data:

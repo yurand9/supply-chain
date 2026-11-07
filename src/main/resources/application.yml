@@ -1,0 +1,75 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: b2b-supply-chain
+
+  # ===== 数据库配置（PostgreSQL）=====
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5433/b2b_db
+    username: postgres
+    password: postgres
+
+  # ===== 启动时自动执行 schema.sql 建表 =====
+  sql:
+    init:
+      mode: always
+      encoding: UTF-8
+
+  # ===== Redis 配置 =====
+  data:
+    redis:
+      host: localhost
+      port: 6379
+      password:            # Redis 无密码就留空；有密码就填在这
+      database: 0
+      timeout: 3000ms
+      lettuce:
+        pool:
+          max-active: 8
+          max-idle: 8
+          min-idle: 0
+
+  # ===== RabbitMQ 配置 =====
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
+    virtual-host: /
+
+  # ===== Jackson 序列化（时间格式）=====
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
+
+# ===== MyBatis-Plus 配置 =====
+mybatis-plus:
+  mapper-locations: classpath*:/mapper/**/*.xml
+  type-aliases-package: com.b2b.supplychain.entity
+  configuration:
+    map-underscore-to-camel-case: true        # 下划线字段自动映射为驼峰属性
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl   # 开发期在控制台打印 SQL
+  global-config:
+    banner: false
+    db-config:
+      id-type: auto                            # 主键用数据库自增
+
+# ===== Knife4j / springdoc 接口文档配置 =====
+springdoc:
+  api-docs:
+    path: /v3/api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+
+knife4j:
+  enable: true
+  setting:
+    language: zh_cn
+
+# ===== 日志配置 =====
+logging:
+  level:
+    com.b2b.supplychain: debug
