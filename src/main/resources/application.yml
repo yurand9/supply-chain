@@ -5,40 +5,15 @@ spring:
   application:
     name: b2b-supply-chain
 
-  # ===== 数据库配置（PostgreSQL）=====
-  datasource:
-    driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://localhost:5433/b2b_db
-    username: postgres
-    password: postgres
+  # 激活 local 配置（数据库/Redis/RabbitMQ 的敏感连接信息在 application-local.yml 中）
+  profiles:
+    active: local
 
   # ===== 启动时自动执行 schema.sql 建表 =====
   sql:
     init:
       mode: always
       encoding: UTF-8
-
-  # ===== Redis 配置 =====
-  data:
-    redis:
-      host: localhost
-      port: 6379
-      password:            # Redis 无密码就留空；有密码就填在这
-      database: 0
-      timeout: 3000ms
-      lettuce:
-        pool:
-          max-active: 8
-          max-idle: 8
-          min-idle: 0
-
-  # ===== RabbitMQ 配置 =====
-  rabbitmq:
-    host: localhost
-    port: 5672
-    username: guest
-    password: guest
-    virtual-host: /
 
   # ===== Jackson 序列化（时间格式）=====
   jackson:

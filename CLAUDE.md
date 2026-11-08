@@ -69,7 +69,9 @@ src/main/java/com/b2b/supplychain/
     └── RedisLockUtil.java           分布式锁工具
 
 src/main/resources/
-├── application.yml                  主配置（数据库/Redis/MQ/端口）
+├── application.yml                  主配置（端口/日志等非敏感项，激活 local profile）
+├── application-local.yml            本地敏感配置（真实密码，已被 .gitignore 忽略）
+├── application-local-example.yml    本地配置脱敏模板（复制后填真实密码）
 ├── schema.sql                       建表脚本（程序启动时自动执行）
 └── (mapper XML，如需要)
 ```
